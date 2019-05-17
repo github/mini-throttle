@@ -1,0 +1,19 @@
+/* @flow strict */
+
+type ThrottleOptions = {|
+  start?: boolean,
+  middle?: boolean,
+  once?: boolean
+|}
+
+declare export function throttle<T: $ReadOnlyArray<mixed>>(
+  callback: (...T) => mixed,
+  wait: number,
+  opts?: ThrottleOptions
+): (...T) => void
+
+declare export function debounce<T: $ReadOnlyArray<mixed>>(
+  callback: (...T) => mixed,
+  wait: number,
+  opts?: ThrottleOptions
+): (...T) => void

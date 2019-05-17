@@ -1,0 +1,88 @@
+{
+  "name": "@github/mini-throttle",
+  "version": "1.0.0",
+  "description": "",
+  "repository": "github.com/github/mini-throttle",
+  "license": "MIT",
+  "author": "GitHub Inc. (https://github.com)",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prebuild": "npm run clean && npm run lint && mkdir dist",
+    "build": "npm run build-umd && npm run build-esm && cp index.d.ts dist/index.d.ts",
+    "build-esm": "BABEL_ENV=esm babel index.js -o dist/index.esm.js && cp index.js.flow dist/index.esm.js.flow",
+    "build-umd": "BABEL_ENV=umd babel index.js -o dist/index.umd.js && cp index.js.flow dist/index.umd.js.flow",
+    "clean": "rm -rf dist",
+    "lint": "github-lint",
+    "prepublishOnly": "npm run build",
+    "test": "BABEL_ENV=umd mocha --require @babel/register && npm run tsc",
+    "tsc": "tsc --noEmit --strict test/index.ts"
+  },
+  "babel": {
+    "env": {
+      "esm": {
+        "presets": [
+          [
+            "@babel/env",
+            {
+              "modules": false,
+              "exclude": [
+                "@babel/plugin-transform-regenerator",
+                "@babel/plugin-transform-spread",
+                "@babel/plugin-transform-destructuring",
+                "@babel/plugin-transform-parameters"
+              ]
+            }
+          ],
+          "@babel/flow"
+        ]
+      },
+      "umd": {
+        "plugins": [
+          "@babel/plugin-transform-modules-umd"
+        ],
+        "presets": [
+          [
+            "@babel/env",
+            {
+              "exclude": [
+                "@babel/plugin-transform-regenerator",
+                "@babel/plugin-transform-spread",
+                "@babel/plugin-transform-destructuring",
+                "@babel/plugin-transform-parameters"
+              ]
+            }
+          ],
+          "@babel/flow"
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:github/browser",
+      "plugin:github/es6",
+      "plugin:github/flow",
+      "plugin:escompat/recommended"
+    ]
+  },
+  "eslintIgnore": ["node_modules/", "dist/"],
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/register": "^7.4.4",
+    "chai": "^4.2.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-escompat": "^1.0.3",
+    "eslint-plugin-github": "^2.0.0",
+    "flow-bin": "^0.98.1",
+    "mocha": "^6.1.4",
+    "typescript": "^3.4.5"
+  }
+}
