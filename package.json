@@ -1,6 +1,6 @@
 {
   "name": "@github/mini-throttle",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "repository": "github.com/github/mini-throttle",
   "license": "MIT",
@@ -70,7 +70,9 @@
       "plugin:escompat/recommended"
     ]
   },
-  "eslintIgnore": ["dist/"],
+  "eslintIgnore": [
+    "dist/"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
