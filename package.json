@@ -20,7 +20,7 @@
     "lint": "github-lint",
     "prepublishOnly": "npm run build",
     "test": "BABEL_ENV=umd mocha --require @babel/register && npm run tsc",
-    "tsc": "tsc --noEmit --strict test/index.ts"
+    "tsc": "tsc --noEmit test/index.ts"
   },
   "babel": {
     "env": {
