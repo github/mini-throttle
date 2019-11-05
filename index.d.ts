@@ -1,14 +1,14 @@
 export type ThrottleOptions = {
   /**
-   * Fire immediately on the first call
+   * Fire immediately on the first call.
    */
   start?: boolean
   /**
-   * If true, fire as soon as `wait` has passed
+   * If true, fire as soon as `wait` has passed.
    */
   middle?: boolean
   /**
-   * Cancel after the first successful call
+   * Cancel after the first successful call.
    */
   once?: boolean
 }
