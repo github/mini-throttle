@@ -103,7 +103,7 @@
     "eslint": "^6.6.0",
     "eslint-plugin-escompat": "^2.1.2",
     "eslint-plugin-github": "^3.2.1",
-    "flow-bin": "^0.111.1",
+    "flow-bin": "^0.98.1",
     "mocha": "^6.2.2",
     "typescript": "^3.7.2"
   }
