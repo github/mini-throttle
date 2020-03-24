@@ -33,6 +33,9 @@
       "plugin:github/typescript",
       "plugin:escompat/recommended"
     ],
+    "rules": {
+      "no-invalid-this": "off"
+    },
     "overrides": [
       {
         "files": "test/*",

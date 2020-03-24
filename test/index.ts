@@ -70,13 +70,13 @@ describe('throttle', () => {
     expect(calls).to.eql([])
   })
 
-  it('does not expose `this`', async () => {
+  it('exposes `this`', async () => {
     fn = throttle(function (this: object) {
-      // eslint-disable-next-line no-invalid-this
       calls.push(this)
     }, 100)
-    fn(1)
-    expect(calls).to.eql([undefined])
+    const receiver = {}
+    fn.call(receiver, 1)
+    expect(calls).to.eql([receiver])
   })
 })
 
@@ -128,6 +128,16 @@ describe('debounce (throttle with {start: false, middle: false})', () => {
     fn(3)
     await delay(100)
     expect(calls).to.eql([[3]])
+  })
+
+  it('exposes `this`', async () => {
+    fn = debounce(function (this: object) {
+      calls.push(this)
+    }, 100)
+    const receiver = {}
+    fn.call(receiver, 1)
+    await delay(100)
+    expect(calls).to.eql([receiver])
   })
 })
 

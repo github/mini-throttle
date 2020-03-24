@@ -26,20 +26,20 @@ export function throttle<T extends unknown[]>(
   let last = 0
   let timer: number | undefined
   let cancelled = false
-  const fn = (...args: T) => {
+  function fn(this: unknown, ...args: T) {
     if (cancelled) return
     const delta = Date.now() - last
     last = Date.now()
     if (start) {
       start = false
-      callback(...args)
+      callback.apply(this, args)
       if (once) fn.cancel()
     } else if ((middle && delta < wait) || !middle) {
       clearTimeout(timer)
       timer = setTimeout(
         () => {
           last = Date.now()
-          callback(...args)
+          callback.apply(this, args)
           if (once) fn.cancel()
         },
         !middle ? wait : wait - delta
