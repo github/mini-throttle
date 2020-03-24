@@ -2,7 +2,10 @@
   "name": "@github/mini-throttle",
   "version": "2.0.0",
   "description": "",
-  "repository": "github.com/github/mini-throttle",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/github/mini-throttle"
+  },
   "license": "MIT",
   "author": "GitHub Inc. (https://github.com)",
   "files": [
