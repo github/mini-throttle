@@ -53,3 +53,21 @@ await delay(100)
 | throttle(fn, 100, {once: true, start: false})|   2                  |
 | debounce(fn, 100)                            |                   10 |
 ```
+
+### TypeScript Decorators Support!
+
+This package also includes a decorator module which can be used to provide [TypeScript Decorator](https://www.typescriptlang.org/docs/handbook/decorators.html#decorators) annotations to functions.
+
+Here's an example, showing what you need to do:
+
+```typescript
+import {throttle} from '@github/mini-throttle/decorators'
+//                                           ^ note: add `/decorators` to the import to get decorators
+
+class MyClass {
+  @throttle(100, { start: false }) // <- Just like normal throttle, but you omit the callback argument
+  doThings() {
+    // `MyClass.prototype.doThings` will be throttled!
+  }
+}
+```

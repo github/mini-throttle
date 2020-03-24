@@ -6,85 +6,42 @@
   "license": "MIT",
   "author": "GitHub Inc. (https://github.com)",
   "files": [
-    "dist"
+    "dist",
+    "!dist/test",
+    "!dist/umd/test",
+    "decorators"
   ],
-  "main": "dist/index.umd.js",
-  "module": "dist/index.esm.js",
+  "main": "dist/umd/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "prebuild": "npm run clean && npm run lint && mkdir dist",
-    "build": "npm run build-umd && npm run build-esm && cp index.d.ts dist/index.d.ts",
-    "build-esm": "BABEL_ENV=esm babel index.js -o dist/index.esm.js && cp index.js.flow dist/index.esm.js.flow",
-    "build-umd": "BABEL_ENV=umd babel index.js -o dist/index.umd.js && cp index.js.flow dist/index.umd.js.flow",
+    "build": "npm run build-umd && npm run build-esm",
+    "build-esm": "tsc",
+    "build-umd": "tsc -m umd --outDir dist/umd",
     "clean": "rm -rf dist",
-    "lint": "github-lint",
+    "lint": "eslint --report-unused-disable-directives . --color --ext .js,.ts,.tsx && tsc --noEmit",
     "prepublishOnly": "npm run build",
-    "test": "BABEL_ENV=umd mocha --require @babel/register && npm run tsc",
-    "tsc": "tsc --noEmit test/index.ts",
+    "test": "mocha -r ts-node/register --extension ts",
     "postpublish": "npm publish --ignore-scripts --@github:registry='https://npm.pkg.github.com'"
   },
-  "babel": {
-    "env": {
-      "esm": {
-        "presets": [
-          [
-            "@babel/env",
-            {
-              "modules": false,
-              "exclude": [
-                "@babel/plugin-transform-regenerator",
-                "@babel/plugin-transform-spread",
-                "@babel/plugin-transform-destructuring",
-                "@babel/plugin-transform-parameters"
-              ]
-            }
-          ],
-          "@babel/flow"
-        ]
-      },
-      "umd": {
-        "plugins": [
-          "@babel/plugin-transform-modules-umd"
-        ],
-        "presets": [
-          [
-            "@babel/env",
-            {
-              "exclude": [
-                "@babel/plugin-transform-regenerator",
-                "@babel/plugin-transform-spread",
-                "@babel/plugin-transform-destructuring",
-                "@babel/plugin-transform-parameters"
-              ]
-            }
-          ],
-          "@babel/flow"
-        ]
-      }
-    }
-  },
   "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
     "extends": [
       "plugin:github/browser",
       "plugin:github/es6",
-      "plugin:github/flow",
+      "plugin:github/typescript",
       "plugin:escompat/recommended"
     ],
+    "rules": {
+      "no-invalid-this": "off"
+    },
     "overrides": [
       {
         "files": "test/*",
         "rules": {
-          "no-console": "off"
-        }
-      },
-      {
-        "files": "**.ts",
-        "parser": "@typescript-eslint/parser",
-        "rules": {
-          "import/named": "off",
-          "import/namespace": "off",
-          "import/no-deprecated": "off",
-          "flowtype/require-valid-file-annotation": "off"
+          "no-console": "off",
+          "@typescript-eslint/no-empty-function": "off"
         }
       }
     ]
@@ -93,18 +50,16 @@
     "dist/"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.7.0",
-    "@babel/core": "^7.7.0",
-    "@babel/preset-env": "^7.7.1",
-    "@babel/preset-flow": "^7.0.0",
-    "@babel/register": "^7.7.0",
-    "@typescript-eslint/parser": "^2.6.1",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@typescript-eslint/parser": "^2.25.0",
     "chai": "^4.2.0",
-    "eslint": "^6.6.0",
-    "eslint-plugin-escompat": "^2.1.2",
-    "eslint-plugin-github": "^3.2.1",
-    "flow-bin": "^0.98.1",
-    "mocha": "^6.2.2",
-    "typescript": "^3.7.2"
+    "eslint": "^6.8.0",
+    "eslint-plugin-compat": "^3.5.1",
+    "eslint-plugin-escompat": "^1.1.0",
+    "eslint-plugin-github": "^3.4.1",
+    "mocha": "^7.1.1",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3"
   }
 }

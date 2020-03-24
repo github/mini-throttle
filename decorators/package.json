@@ -1,0 +1,4 @@
+{
+  "main": "../dist/umd/decorators.js",
+  "module": "../dist/decorators.js"
+}
