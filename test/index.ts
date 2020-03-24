@@ -1,4 +1,5 @@
 import {throttle, debounce} from '../index'
+import {throttle as decoratorThrottle, debounce as decoratorDebounce} from '../decorators'
 import {beforeEach, describe, it} from 'mocha'
 import {expect} from 'chai'
 const delay = (m: number) => new Promise((r) => setTimeout(r, m))
@@ -173,5 +174,43 @@ describe('marbles', () => {
   it('debounce(fn, 100)', async () => {
     await loop(debounce((x) => calls.push(x), 100))
     expect(calls).to.eql([10])
+  })
+})
+
+describe('decorators', () => {
+  const loop = async (cb: (n: number) => void) => {
+    for (let i = 1; i <= 10; ++i) {
+      cb(i)
+      await delay(50)
+    }
+    await delay(100)
+  }
+
+  describe('throttle', () => {
+    it('wraps decorated function as throttle', async () => {
+      class MyClass {
+        @decoratorThrottle(100)
+        foo(x: number) {
+          calls.push(x)
+        }
+      }
+      const instance = new MyClass()
+      await loop((x) => instance.foo(x))
+      expect(calls).to.eql([1, 2, 4, 6, 8, 10])
+    })
+  })
+
+  describe('debounce', () => {
+    it('wraps decorated function as throttle', async () => {
+      class MyClass {
+        @decoratorDebounce(100)
+        foo(x: number) {
+          calls.push(x)
+        }
+      }
+      const instance = new MyClass()
+      await loop((x) => instance.foo(x))
+      expect(calls).to.eql([10])
+    })
   })
 })

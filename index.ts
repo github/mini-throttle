@@ -1,4 +1,4 @@
-interface ThrottleOptions {
+export interface ThrottleOptions {
   /**
    * Fire immediately on the first call.
    */
