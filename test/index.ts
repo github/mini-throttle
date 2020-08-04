@@ -1,3 +1,4 @@
+import 'jsdom-global/register'
 import {throttle, debounce} from '../index'
 import {throttle as decoratorThrottle, debounce as decoratorDebounce} from '../decorators'
 import {beforeEach, describe, it} from 'mocha'
@@ -78,6 +79,18 @@ describe('throttle', () => {
     const receiver = {}
     fn.call(receiver, 1)
     expect(calls).to.eql([receiver])
+  })
+
+  it('keeps a reference to `currentTarget` in events', (done) => {
+    const input = document.createElement('input')
+    input.addEventListener(
+      'input',
+      debounce(function (event: Event) {
+        expect(event.currentTarget).to.eql(input)
+        done()
+      }, 100)
+    )
+    input.dispatchEvent(new Event('input'))
   })
 })
 
