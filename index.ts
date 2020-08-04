@@ -18,6 +18,8 @@ interface Throttler<T extends unknown[]> {
   cancel(): void
 }
 
+const currentTargets = new WeakMap<Event, Element>()
+
 export function throttle<T extends unknown[]>(
   callback: (...args: T) => unknown,
   wait = 0,
@@ -28,6 +30,19 @@ export function throttle<T extends unknown[]>(
   let cancelled = false
   function fn(this: unknown, ...args: T) {
     if (cancelled) return
+
+    // Cache the `currentTarget` if we are throttling a event handler.
+    if (args[0] instanceof Event) {
+      const ev = args[0]
+      currentTargets.set(ev, ev.currentTarget as Element)
+
+      Object.defineProperty(ev, 'currentTarget', {
+        get(this: Event) {
+          return currentTargets.get(this)
+        },
+      })
+    }
+
     const delta = Date.now() - last
     last = Date.now()
     if (start) {
