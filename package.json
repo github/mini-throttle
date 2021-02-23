@@ -54,16 +54,17 @@
     "dist/"
   ],
   "devDependencies": {
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
-    "@typescript-eslint/parser": "^2.25.0",
-    "chai": "^4.2.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-compat": "^3.5.1",
-    "eslint-plugin-escompat": "^1.1.0",
-    "eslint-plugin-github": "^3.4.1",
-    "mocha": "^7.1.1",
-    "ts-node": "^8.8.1",
-    "typescript": "^3.8.3"
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "chai": "^4.3.0",
+    "eslint": "^7.20.0",
+    "eslint-plugin-compat": "^3.9.0",
+    "eslint-plugin-escompat": "^3.1.0",
+    "eslint-plugin-github": "^4.1.1",
+    "mocha": "^8.3.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.5"
   }
 }
