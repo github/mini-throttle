@@ -32,10 +32,11 @@
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "extends": [
+      "plugin:github/recommended",
       "plugin:github/browser",
-      "plugin:github/es6",
-      "plugin:github/typescript",
-      "plugin:escompat/recommended"
+      "plugin:escompat/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
     ],
     "rules": {
       "no-invalid-this": "off"
@@ -50,10 +51,12 @@
       }
     ]
   },
+  "prettier": "@github/prettier-config",
   "eslintIgnore": [
     "dist/"
   ],
   "devDependencies": {
+    "@github/prettier-config": "0.0.4",
     "@types/chai": "^4.2.15",
     "@types/mocha": "^8.2.1",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
@@ -64,6 +67,7 @@
     "eslint-plugin-escompat": "^3.1.0",
     "eslint-plugin-github": "^4.1.1",
     "mocha": "^8.3.0",
+    "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.5"
   }
