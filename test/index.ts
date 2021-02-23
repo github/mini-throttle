@@ -2,7 +2,7 @@ import {throttle, debounce} from '../index'
 import {throttle as decoratorThrottle, debounce as decoratorDebounce} from '../decorators'
 import {beforeEach, describe, it} from 'mocha'
 import {expect} from 'chai'
-const delay = (m: number) => new Promise((r) => setTimeout(r, m))
+const delay = (m: number) => new Promise(r => setTimeout(r, m))
 
 interface Throttler<T extends unknown[]> {
   (...args: T): void
@@ -57,7 +57,7 @@ describe('throttle', () => {
     await delay(100)
     expect(calls).to.eql([
       [1, 2, 3],
-      [10, 11, 12],
+      [10, 11, 12]
     ])
   })
 
@@ -157,22 +157,22 @@ describe('marbles', () => {
   })
 
   it('throttle(fn, 100)', async () => {
-    await loop(throttle((x) => calls.push(x), 100))
+    await loop(throttle(x => calls.push(x), 100))
     expect(calls).to.eql([1, 2, 4, 6, 8, 10])
   })
 
   it('throttle(fn, 100, {start:false})', async () => {
-    await loop(throttle((x) => calls.push(x), 100, {start: false}))
+    await loop(throttle(x => calls.push(x), 100, {start: false}))
     expect(calls).to.eql([2, 4, 6, 8, 10])
   })
 
   it('throttle(fn, 100, {middle:false})', async () => {
-    await loop(throttle((x) => calls.push(x), 100, {middle: false}))
+    await loop(throttle(x => calls.push(x), 100, {middle: false}))
     expect(calls).to.eql([1, 10])
   })
 
   it('debounce(fn, 100)', async () => {
-    await loop(debounce((x) => calls.push(x), 100))
+    await loop(debounce(x => calls.push(x), 100))
     expect(calls).to.eql([10])
   })
 })
@@ -195,7 +195,7 @@ describe('decorators', () => {
         }
       }
       const instance = new MyClass()
-      await loop((x) => instance.foo(x))
+      await loop(x => instance.foo(x))
       expect(calls).to.eql([1, 2, 4, 6, 8, 10])
     })
   })
@@ -209,7 +209,7 @@ describe('decorators', () => {
         }
       }
       const instance = new MyClass()
-      await loop((x) => instance.foo(x))
+      await loop(x => instance.foo(x))
       expect(calls).to.eql([10])
     })
   })
