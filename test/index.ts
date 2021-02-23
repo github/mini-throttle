@@ -72,7 +72,7 @@ describe('throttle', () => {
   })
 
   it('exposes `this`', async () => {
-    fn = throttle(function (this: object) {
+    fn = throttle(function (this: unknown) {
       calls.push(this)
     }, 100)
     const receiver = {}
@@ -132,7 +132,7 @@ describe('debounce (throttle with {start: false, middle: false})', () => {
   })
 
   it('exposes `this`', async () => {
-    fn = debounce(function (this: object) {
+    fn = debounce(function (this: unknown) {
       calls.push(this)
     }, 100)
     const receiver = {}
