@@ -17,6 +17,7 @@
   "main": "dist/umd/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "prebuild": "npm run clean && npm run lint && mkdir dist",
     "build": "npm run build-umd && npm run build-esm",
