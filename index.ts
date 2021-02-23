@@ -24,7 +24,7 @@ export function throttle<T extends unknown[]>(
   {start = true, middle = true, once = false}: ThrottleOptions = {}
 ): Throttler<T> {
   let last = 0
-  let timer: number | undefined
+  let timer: ReturnType<typeof setTimeout>
   let cancelled = false
   function fn(this: unknown, ...args: T) {
     if (cancelled) return
