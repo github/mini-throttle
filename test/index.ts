@@ -49,6 +49,17 @@ describe('throttle', () => {
     expect(calls).to.eql([[1], [3]])
   })
 
+  it('will fire even the passed time greater than `wait` ms', async () => {
+    fn(1)
+    await delay(200)
+    fn(2)
+    fn(3)
+    fn(4)
+    await delay(1000)
+    fn(5)
+    expect(calls).to.eql([[1], [2], [4], [5]])
+  })
+
   it('calls callback with given arguments (middle)', async () => {
     fn(1, 2, 3)
     fn(4, 5, 6)
@@ -129,6 +140,17 @@ describe('debounce (throttle with {start: false, middle: false})', () => {
     fn(3)
     await delay(100)
     expect(calls).to.eql([[3]])
+  })
+
+  it('will fire even the passed time greater than `wait` ms', async () => {
+    fn(1)
+    await delay(200)
+    fn(2)
+    fn(3)
+    fn(4)
+    await delay(1000)
+    fn(5)
+    expect(calls).to.eql([[1], [4]])
   })
 
   it('exposes `this`', async () => {

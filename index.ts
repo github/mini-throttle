@@ -23,6 +23,7 @@ export function throttle<T extends unknown[]>(
   wait = 0,
   {start = true, middle = true, once = false}: ThrottleOptions = {}
 ): Throttler<T> {
+  let innerStart = start
   let last = 0
   let timer: ReturnType<typeof setTimeout>
   let cancelled = false
@@ -30,8 +31,13 @@ export function throttle<T extends unknown[]>(
     if (cancelled) return
     const delta = Date.now() - last
     last = Date.now()
-    if (start) {
-      start = false
+
+    if (start && middle && delta >= wait) {
+      innerStart = true
+    }
+
+    if (innerStart) {
+      innerStart = false
       callback.apply(this, args)
       if (once) fn.cancel()
     } else if ((middle && delta < wait) || !middle) {
