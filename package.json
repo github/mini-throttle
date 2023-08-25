@@ -66,7 +66,7 @@
     "eslint-plugin-compat": "^3.9.0",
     "eslint-plugin-escompat": "^3.1.0",
     "eslint-plugin-github": "^4.1.1",
-    "mocha": "^8.3.0",
+    "mocha": "^10.2.0",
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.5"
