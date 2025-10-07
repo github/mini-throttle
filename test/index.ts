@@ -1,4 +1,5 @@
 import {throttle, debounce} from '../index'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {throttle as decoratorThrottle, debounce as decoratorDebounce} from '../decorators'
 import {beforeEach, describe, it, expect} from 'vitest'
 const delay = (m: number) => new Promise(r => setTimeout(r, m))
