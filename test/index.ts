@@ -1,7 +1,6 @@
 import {throttle, debounce} from '../index'
 import {throttle as decoratorThrottle, debounce as decoratorDebounce} from '../decorators'
-import {beforeEach, describe, it} from 'mocha'
-import {expect} from 'chai'
+import {beforeEach, describe, it, expect} from 'vitest'
 const delay = (m: number) => new Promise(r => setTimeout(r, m))
 
 interface Throttler<T extends unknown[]> {
@@ -22,12 +21,12 @@ describe('throttle', () => {
   })
   it('fires callback immediately', async () => {
     fn()
-    expect(calls).to.have.lengthOf(1)
+    expect(calls).toHaveLength(1)
   })
 
   it('calls callback with given arguments', async () => {
     fn(1, 2, 3)
-    expect(calls).to.eql([[1, 2, 3]])
+    expect(calls).toEqual([[1, 2, 3]])
   })
 
   it('fires once `wait` ms have passed', async () => {
@@ -38,7 +37,7 @@ describe('throttle', () => {
     fn(3)
     await delay(50)
     fn(4)
-    expect(calls).to.eql([[1], [2]])
+    expect(calls).toEqual([[1], [2]])
   })
 
   it('will fire last call after `wait` ms have passed', async () => {
@@ -46,7 +45,7 @@ describe('throttle', () => {
     fn(2)
     fn(3)
     await delay(100)
-    expect(calls).to.eql([[1], [3]])
+    expect(calls).toEqual([[1], [3]])
   })
 
   it('will fire even the passed time greater than `wait` ms', async () => {
@@ -57,7 +56,7 @@ describe('throttle', () => {
     fn(4)
     await delay(1000)
     fn(5)
-    expect(calls).to.eql([[1], [2], [4], [5]])
+    expect(calls).toEqual([[1], [2], [4], [5]])
   })
 
   it('calls callback with given arguments (middle)', async () => {
@@ -66,7 +65,7 @@ describe('throttle', () => {
     fn(7, 8, 9)
     fn(10, 11, 12)
     await delay(100)
-    expect(calls).to.eql([
+    expect(calls).toEqual([
       [1, 2, 3],
       [10, 11, 12]
     ])
@@ -79,7 +78,7 @@ describe('throttle', () => {
     fn(7, 8, 9)
     fn(10, 11, 12)
     await delay(100)
-    expect(calls).to.eql([])
+    expect(calls).toEqual([])
   })
 
   it('exposes `this`', async () => {
@@ -88,7 +87,7 @@ describe('throttle', () => {
     }, 100)
     const receiver = {}
     fn.call(receiver, 1)
-    expect(calls).to.eql([receiver])
+    expect(calls).toEqual([receiver])
   })
 })
 
@@ -98,7 +97,7 @@ describe('throttle {start:false}', () => {
   })
   it('does not fire callback immediately', async () => {
     fn()
-    expect(calls).to.have.lengthOf(0)
+    expect(calls).toHaveLength(0)
   })
 })
 
@@ -109,7 +108,7 @@ describe('throttle {middle:false}', () => {
 
   it('fires first callback', async () => {
     fn(1)
-    expect(calls).to.eql([[1]])
+    expect(calls).toEqual([[1]])
   })
 
   it('does not fire if `wait` ms have passed', async () => {
@@ -120,7 +119,7 @@ describe('throttle {middle:false}', () => {
     fn(3)
     await delay(50)
     fn(4)
-    expect(calls).to.eql([[1]])
+    expect(calls).toEqual([[1]])
   })
 })
 
@@ -131,7 +130,7 @@ describe('debounce (throttle with {start: false, middle: false})', () => {
 
   it('does not fire callback immediately', async () => {
     fn()
-    expect(calls).to.have.lengthOf(0)
+    expect(calls).toHaveLength(0)
   })
 
   it('only fires once `wait` ms have passed without any calls', async () => {
@@ -139,7 +138,7 @@ describe('debounce (throttle with {start: false, middle: false})', () => {
     fn(2)
     fn(3)
     await delay(100)
-    expect(calls).to.eql([[3]])
+    expect(calls).toEqual([[3]])
   })
 
   it('will fire even the passed time greater than `wait` ms', async () => {
@@ -150,7 +149,7 @@ describe('debounce (throttle with {start: false, middle: false})', () => {
     fn(4)
     await delay(1000)
     fn(5)
-    expect(calls).to.eql([[1], [4]])
+    expect(calls).toEqual([[1], [4]])
   })
 
   it('exposes `this`', async () => {
@@ -160,7 +159,7 @@ describe('debounce (throttle with {start: false, middle: false})', () => {
     const receiver = {}
     fn.call(receiver, 1)
     await delay(100)
-    expect(calls).to.eql([receiver])
+    expect(calls).toEqual([receiver])
   })
 })
 
@@ -175,27 +174,27 @@ describe('marbles', () => {
 
   it('fn', async () => {
     await loop((x: number) => calls.push(x))
-    expect(calls).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    expect(calls).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
   })
 
   it('throttle(fn, 100)', async () => {
     await loop(throttle(x => calls.push(x), 100))
-    expect(calls).to.eql([1, 2, 4, 6, 8, 10])
+    expect(calls).toEqual([1, 2, 4, 6, 8, 10])
   })
 
   it('throttle(fn, 100, {start:false})', async () => {
     await loop(throttle(x => calls.push(x), 100, {start: false}))
-    expect(calls).to.eql([2, 4, 6, 8, 10])
+    expect(calls).toEqual([2, 4, 6, 8, 10])
   })
 
   it('throttle(fn, 100, {middle:false})', async () => {
     await loop(throttle(x => calls.push(x), 100, {middle: false}))
-    expect(calls).to.eql([1, 10])
+    expect(calls).toEqual([1, 10])
   })
 
   it('debounce(fn, 100)', async () => {
     await loop(debounce(x => calls.push(x), 100))
-    expect(calls).to.eql([10])
+    expect(calls).toEqual([10])
   })
 })
 
@@ -218,7 +217,7 @@ describe('decorators', () => {
       }
       const instance = new MyClass()
       await loop(x => instance.foo(x))
-      expect(calls).to.eql([1, 2, 4, 6, 8, 10])
+      expect(calls).toEqual([1, 2, 4, 6, 8, 10])
     })
   })
 
@@ -232,7 +231,7 @@ describe('decorators', () => {
       }
       const instance = new MyClass()
       await loop(x => instance.foo(x))
-      expect(calls).to.eql([10])
+      expect(calls).toEqual([10])
     })
   })
 })
