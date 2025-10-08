@@ -8,10 +8,7 @@ export default defineConfig({
       enabled: true,
       instances: [
         {
-          browser: 'chromium',
-          launch: {
-            executablePath: '/usr/bin/chromium'
-          }
+          browser: 'chromium'
         }
       ],
       provider: 'playwright',
