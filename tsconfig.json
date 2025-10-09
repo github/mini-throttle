@@ -10,6 +10,7 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "skipLibCheck": true
   }
 }
