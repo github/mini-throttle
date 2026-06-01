@@ -61,7 +61,7 @@
     "@types/node": "^24.7.0",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
-    "@vitest/browser": "^3.2.4",
+    "@vitest/browser": "^4.1.8",
     "eslint": "^7.20.0",
     "eslint-plugin-compat": "^3.9.0",
     "eslint-plugin-escompat": "^3.1.0",
@@ -69,6 +69,6 @@
     "playwright": "^1.56.0",
     "prettier": "^2.2.1",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.8"
   }
 }
