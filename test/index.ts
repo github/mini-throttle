@@ -199,6 +199,82 @@ describe('marbles', () => {
 })
 
 describe('decorators', () => {
+  it('debounces separate instances independently', async () => {
+    class MyClass {
+      @decoratorDebounce(50)
+      foo(x: number) {
+        calls.push([this, x])
+      }
+    }
+    const first = new MyClass()
+    const second = new MyClass()
+    first.foo(1)
+    second.foo(2)
+    first.foo(3)
+    await delay(100)
+    expect(calls).toEqual([
+      [second, 2],
+      [first, 3]
+    ])
+  })
+
+  it('applies once separately to each decorated instance', () => {
+    class MyClass {
+      @decoratorThrottle(100, {once: true})
+      foo(x: number) {
+        calls.push([this, x])
+      }
+    }
+    const first = new MyClass()
+    const second = new MyClass()
+    first.foo(1)
+    second.foo(2)
+    first.foo(3)
+    second.foo(4)
+    expect(calls).toEqual([
+      [first, 1],
+      [second, 2]
+    ])
+  })
+
+  it('keeps cancellation local to the decorated instance', async () => {
+    class MyClass {
+      @decoratorDebounce(50)
+      foo(x: number) {
+        calls.push(x)
+      }
+    }
+    const first = new MyClass()
+    const second = new MyClass()
+    expect(first.foo).toBe(first.foo)
+    first.foo(1)
+    second.foo(2)
+    ;(first.foo as typeof first.foo & {cancel(): void}).cancel()
+    await delay(100)
+    expect(calls).toEqual([2])
+  })
+
+  it('allows an instance to override the decorated method', () => {
+    class MyClass {
+      @decoratorThrottle(100)
+      foo(x: number) {
+        calls.push(x)
+      }
+    }
+    const first = new MyClass()
+    const second = new MyClass()
+    first.foo = x => calls.push(x * 10)
+    expect(Object.getOwnPropertyDescriptor(first, 'foo')).toEqual({
+      value: first.foo,
+      writable: true,
+      configurable: true,
+      enumerable: true
+    })
+    first.foo(1)
+    second.foo(2)
+    expect(calls).toEqual([10, 2])
+  })
+
   const loop = async (cb: (n: number) => void) => {
     for (let i = 1; i <= 10; ++i) {
       cb(i)
