@@ -24,7 +24,7 @@
     "build-esm": "tsc",
     "build-umd": "tsc -m umd --outDir dist/umd",
     "clean": "rm -rf dist",
-    "lint": "eslint . --report-unused-disable-directives --color && tsc --noEmit",
+    "lint": "eslint . --report-unused-disable-directives --color && tsc --noEmit && tsc -p test/standard",
     "prepublishOnly": "npm run build",
     "test": "vitest run",
     "postpublish": "npm publish --ignore-scripts --@github:registry='https://npm.pkg.github.com'"
