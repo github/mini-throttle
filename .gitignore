@@ -1,3 +1,4 @@
 node_modules/
 dist/
-test/__screenshots__
+__screenshots__/
+.vitest-attachments/
