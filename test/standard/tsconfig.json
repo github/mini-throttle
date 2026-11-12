@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "experimentalDecorators": false,
+    "target": "ES2022",
+    "noEmit": true
+  },
+  "include": ["*.ts", "../types/*.ts"],
+  "exclude": []
+}

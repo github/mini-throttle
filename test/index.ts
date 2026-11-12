@@ -234,4 +234,40 @@ describe('decorators', () => {
       expect(calls).toEqual([10])
     })
   })
+
+  it('shares one timer across instances', async () => {
+    class MyClass {
+      constructor(private id: string) {}
+      @decoratorDebounce(100)
+      foo() {
+        calls.push(this.id)
+      }
+    }
+    new MyClass('a').foo()
+    new MyClass('b').foo()
+    await delay(150)
+    expect(calls).toEqual(['b'])
+  })
+
+  it('rejects members that are not methods', () => {
+    // Class declarations, not expressions: oxc drops legacy decorators on class expressions.
+    expect(() => {
+      class Field {
+        // @ts-expect-error fields are not methods
+        @decoratorThrottle(100)
+        foo = () => {}
+      }
+      return Field
+    }).toThrow('debounce can only decorate functions')
+    expect(() => {
+      class Getter {
+        // @ts-expect-error getters are not methods
+        @decoratorDebounce(100)
+        get foo() {
+          return 1
+        }
+      }
+      return Getter
+    }).toThrow('debounce can only decorate functions')
+  })
 })
