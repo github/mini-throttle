@@ -235,43 +235,39 @@ describe('decorators', () => {
     })
   })
 
-  // Standard (TC39) decorators receive the method and a context object. The test build uses
-  // `experimentalDecorators`, so these call the decorators the way the standard runtime does.
-  describe('standard decorators', () => {
-    const methodContext = {kind: 'method', name: 'foo', static: false, private: false} as ClassMethodDecoratorContext
+  it('shares one timer across instances', async () => {
+    class MyClass {
+      constructor(private id: string) {}
+      @decoratorDebounce(100)
+      foo() {
+        calls.push(this.id)
+      }
+    }
+    new MyClass('a').foo()
+    new MyClass('b').foo()
+    await delay(150)
+    expect(calls).toEqual(['b'])
+  })
 
-    it('throttles the method, keeping `this`', async () => {
-      class MyClass {
-        calls: number[] = []
-        foo(x: number) {
-          this.calls.push(x)
+  it('rejects members that are not methods', () => {
+    // Class declarations, not expressions: oxc drops legacy decorators on class expressions.
+    expect(() => {
+      class Field {
+        // @ts-expect-error fields are not methods
+        @decoratorThrottle(100)
+        foo = () => {}
+      }
+      return Field
+    }).toThrow('debounce can only decorate functions')
+    expect(() => {
+      class Getter {
+        // @ts-expect-error getters are not methods
+        @decoratorDebounce(100)
+        get foo() {
+          return 1
         }
       }
-      const throttled = decoratorThrottle(100)(MyClass.prototype.foo, methodContext)
-      const instance = new MyClass()
-      await loop(x => throttled.call(instance, x))
-      expect(instance.calls).toEqual([1, 2, 4, 6, 8, 10])
-    })
-
-    it('debounces the method, keeping `this`', async () => {
-      class MyClass {
-        calls: number[] = []
-        foo(x: number) {
-          this.calls.push(x)
-        }
-      }
-      const debounced = decoratorDebounce(100)(MyClass.prototype.foo, methodContext)
-      const instance = new MyClass()
-      await loop(x => debounced.call(instance, x))
-      expect(instance.calls).toEqual([10])
-    })
-
-    it('rejects members that are not methods', () => {
-      const field: unknown = {kind: 'field', name: 'foo', static: false, private: false}
-      const fieldContext = field as ClassMethodDecoratorContext
-      expect(() => decoratorDebounce(100)((() => {}) as () => void, fieldContext)).toThrow(
-        'debounce can only decorate functions'
-      )
-    })
+      return Getter
+    }).toThrow('debounce can only decorate functions')
   })
 })

@@ -1,6 +1,6 @@
 import {debounce as db, throttle as th, ThrottleOptions} from './index'
 
-type Method = (this: unknown, ...args: never[]) => unknown
+type Method = (...args: never[]) => unknown
 
 /**
  * The parts of a standard decorator's `ClassMethodDecoratorContext` used here. Declared structurally so these
@@ -17,7 +17,7 @@ export interface MethodDecoratorContext {
  */
 export interface DualMethodDecorator {
   <T extends Method>(method: T, context: MethodDecoratorContext): T
-  (proto: object, name: string | symbol, descriptor: PropertyDescriptor): void
+  <T extends Method>(proto: object, name: string | symbol, descriptor: TypedPropertyDescriptor<T>): void
 }
 
 function methodDecorator(wrap: (fn: Method) => Method): DualMethodDecorator {
